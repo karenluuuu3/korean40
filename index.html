@@ -141,16 +141,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   -->
 </div>
 
-<div class="feedback-toggle" onclick="toggleFeedback()">意見回饋box</div>
-<div class="fb-box" id="fbBox">
-  <textarea id="fbText" placeholder="有任何建議或想法都可以留言..."></textarea>
-  <div class="fb-box-btns">
-    <button class="fb-cancel" onclick="toggleFeedback()">Cancel</button>
-    <button class="fb-send" id="fbSendBtn" onclick="sendFeedback()">Send</button>
-  </div>
-  <div class="fb-msg" id="fbMsg"></div>
-</div>
-
 <!-- ===== 答題畫面 ===== -->
 <div class="screen" id="quiz">
   <div class="quiz-top">
@@ -186,6 +176,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
     <button class="btn-primary" onclick="startQuiz()">再練習一次</button>
     <button class="btn-secondary" onclick="goHome()">回到首頁</button>
   </div>
+
+  <div class="feedback-toggle" onclick="toggleFeedback()">意見回饋🖐🏻</div>
+    <div class="fb-box" id="fbBox">
+    <textarea id="fbText" placeholder="..."></textarea>
+    <div class="fb-box-btns">
+        <button class="fb-cancel" onclick="toggleFeedback()">Cancel</button>
+        <button class="fb-send" id="fbSendBtn" onclick="sendFeedback()">Send</button>
+    </div>
+    <div class="fb-msg" id="fbMsg"></div>
+    </div>
 
   <!--
   <div class="history-section">
@@ -499,7 +499,7 @@ function sendFeedback() {
     text: text,
     time: Date.now()
   }).then(function() {
-    msg.textContent = '感謝你的回饋！';
+    msg.textContent = '感謝你的回饋！🙏🏻';
     msg.style.color = '#38a169';
     document.getElementById('fbText').value = '';
     btn.disabled = false;
