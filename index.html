@@ -69,6 +69,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 .fb-detail{font-size:14px;color:#666;margin-top:8px;line-height:1.6}
 .fb-detail strong{font-weight:600;color:#1a1a1a}
 .fb-pair{font-size:20px;font-weight:700;color:#1a1a1a;margin-top:10px;letter-spacing:2px}
+.fb-zhuyin{font-size:15px;color:#999;margin-top:6px;letter-spacing:1px}
 .next-btn{width:100%;padding:14px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;background:#fff;border:2px solid #d0d0d0;color:#1a1a1a;transition:all .15s}
 .next-btn:hover{border-color:#aaa}
 .next-btn:active{transform:scale(.97)}
@@ -122,7 +123,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 
   <div class="err-msg" id="homeErr"></div>
   <button class="start-btn" onclick="startQuiz()">START</button>
+  <!--
   <div class="total-count">累計完成 <span id="totalRuns">--</span> 次練習</div>
+  -->
 </div>
 
 <!-- ===== 答題畫面 ===== -->
@@ -161,13 +164,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
     <button class="btn-secondary" onclick="goHome()">回到首頁</button>
   </div>
 
+  <!--
   <div class="history-section">
     <h3>最近練習紀錄</h3>
     <div class="history-list" id="historyList">
       <div class="no-records">載入中...</div>
     </div>
   </div>
+  -->
 </div>
+
 
 </div>
 
@@ -202,21 +208,21 @@ try {
 /* ── 題庫 ── */
 var DB = {
   bv: [
-    {k:'ㅏ',r:'a'},{k:'ㅑ',r:'ya'},{k:'ㅓ',r:'eo'},{k:'ㅕ',r:'yeo'},{k:'ㅗ',r:'o'},
-    {k:'ㅛ',r:'yo'},{k:'ㅜ',r:'u'},{k:'ㅠ',r:'yu'},{k:'ㅡ',r:'eu'},{k:'ㅣ',r:'i'}
+    {k:'ㅏ',r:'a',z:'ㄚ'},{k:'ㅑ',r:'ya',z:'ㄧㄚ'},{k:'ㅓ',r:'eo',z:'ㄛ'},{k:'ㅕ',r:'yeo',z:'ㄧㄛ'},{k:'ㅗ',r:'o',z:'ㄡ'},
+    {k:'ㅛ',r:'yo',z:'ㄧㄡ'},{k:'ㅜ',r:'u',z:'ㄨ'},{k:'ㅠ',r:'yu',z:'ㄩ'},{k:'ㅡ',r:'eu',z:'ㄜ'},{k:'ㅣ',r:'i',z:'ㄧ'}
   ],
   cv: [
-    {k:'ㅐ',r:'ae'},{k:'ㅒ',r:'yae'},{k:'ㅔ',r:'e'},{k:'ㅖ',r:'ye'},{k:'ㅘ',r:'wa'},
-    {k:'ㅙ',r:'wae'},{k:'ㅚ',r:'oe'},{k:'ㅝ',r:'wo'},{k:'ㅞ',r:'we'},{k:'ㅟ',r:'wi'},
-    {k:'ㅢ',r:'ui'}
+    {k:'ㅐ',r:'ae',z:'ㄟ'},{k:'ㅒ',r:'yae',z:'ㄧㄟ'},{k:'ㅔ',r:'e',z:'ㄝ'},{k:'ㅖ',r:'ye',z:'ㄧㄝ'},{k:'ㅘ',r:'wa',z:'ㄨㄚ'},
+    {k:'ㅙ',r:'wae',z:'ㄨㄝ'},{k:'ㅚ',r:'oe',z:'ㄨㄟ'},{k:'ㅝ',r:'wo',z:'ㄨㄛ'},{k:'ㅞ',r:'we',z:'ㄨㄟ'},{k:'ㅟ',r:'wi',z:'ㄨㄧ'},
+    {k:'ㅢ',r:'ui',z:'ㄜㄧ'}
   ],
   sc: [
-    {k:'ㄱ',r:'g'},{k:'ㄴ',r:'n'},{k:'ㄷ',r:'d'},{k:'ㄹ',r:'r'},{k:'ㅁ',r:'m'},
-    {k:'ㅂ',r:'b'},{k:'ㅅ',r:'s'},{k:'ㅇ',r:'ng'},{k:'ㅈ',r:'j'},{k:'ㅊ',r:'ch'},
-    {k:'ㅋ',r:'k'},{k:'ㅌ',r:'t'},{k:'ㅍ',r:'p'},{k:'ㅎ',r:'h'}
+    {k:'ㄱ',r:'g',z:'ㄎ/ㄍ'},{k:'ㄴ',r:'n',z:'ㄋ'},{k:'ㄷ',r:'d',z:'ㄉ/ㄊ'},{k:'ㄹ',r:'r',z:'ㄌ'},{k:'ㅁ',r:'m',z:'ㄇ'},
+    {k:'ㅂ',r:'b',z:'ㄅ/ㄆ'},{k:'ㅅ',r:'s',z:'ㄙ/ㄒ'},{k:'ㅇ',r:'ng',z:'ㄥ(不發音)'},{k:'ㅈ',r:'j',z:'ㄐ/ㄘ'},{k:'ㅊ',r:'ch',z:'ㄘ'},
+    {k:'ㅋ',r:'k',z:'ㄎ'},{k:'ㅌ',r:'t',z:'ㄊ'},{k:'ㅍ',r:'p',z:'ㄆ'},{k:'ㅎ',r:'h',z:'ㄏ'}
   ],
   dc: [
-    {k:'ㄲ',r:'kk'},{k:'ㄸ',r:'tt'},{k:'ㅃ',r:'pp'},{k:'ㅆ',r:'ss'},{k:'ㅉ',r:'jj'}
+    {k:'ㄲ',r:'kk',z:'ㄍ'},{k:'ㄸ',r:'tt',z:'ㄉ'},{k:'ㅃ',r:'pp',z:'ㄅ'},{k:'ㅆ',r:'ss',z:'ㄙ'},{k:'ㅉ',r:'jj',z:'ㄗ'}
   ]
 };
 
@@ -355,20 +361,23 @@ function pickOpt(el) {
 function showFeedback(isRight, userAns, correctAns) {
   var fb = document.getElementById('fbArea');
   var pair = cur.item.k + ' = ' + cur.item.r;
+  var zhuyin = '發音參考：' + cur.item.z;
   if (isRight) {
     fb.innerHTML =
       '<div class="fb-panel ok">' +
         '<div class="fb-icon">✅</div>' +
         '<div class="fb-pair">' + pair + '</div>' +
+        '<div class="fb-zhuyin">' + zhuyin + '</div>' +
       '</div>' +
-      '<button class="next-btn" onclick="showQuestion()">下一題</button>';
+      '<button class="next-btn" onclick="showQuestion()">Next</button>';
   } else {
     fb.innerHTML =
       '<div class="fb-panel no">' +
         '<div class="fb-icon">❌</div>' +
         '<div class="fb-pair">' + pair + '</div>' +
+        '<div class="fb-zhuyin">' + zhuyin + '</div>' +
       '</div>' +
-      '<button class="next-btn" onclick="showQuestion()">下一題</button>';
+      '<button class="next-btn" onclick="showQuestion()">Next</button>';
   }
 }
 
