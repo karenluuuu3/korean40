@@ -99,6 +99,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 .history-row .h-detail{color:#999}
 .no-records{text-align:center;padding:20px;font-size:13px;color:#bbb}
 
+/* 回饋箱 */
+.feedback-toggle{font-size:13px;color:#aaa;margin-top:1.25rem;cursor:pointer;display:inline-block}
+.feedback-toggle:hover{color:#4a90d9}
+.fb-box{margin-top:12px;display:none;text-align:left}
+.fb-box.open{display:block}
+.fb-box textarea{width:100%;height:80px;border:2px solid #e0e0e0;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;resize:vertical;outline:none;transition:border-color .15s}
+.fb-box textarea:focus{border-color:#4a90d9}
+.fb-box-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+.fb-send{padding:8px 18px;border-radius:8px;background:#4a90d9;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer}
+.fb-send:disabled{opacity:.4;cursor:not-allowed}
+.fb-cancel{padding:8px 14px;border-radius:8px;background:#fff;border:1.5px solid #d0d0d0;color:#666;font-size:13px;cursor:pointer}
+.fb-msg{font-size:13px;margin-top:8px;min-height:18px}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:500px){
@@ -126,6 +139,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   <!--
   <div class="total-count">累計完成 <span id="totalRuns">--</span> 次練習</div>
   -->
+</div>
+
+<div class="feedback-toggle" onclick="toggleFeedback()">意見回饋box</div>
+<div class="fb-box" id="fbBox">
+  <textarea id="fbText" placeholder="有任何建議或想法都可以留言..."></textarea>
+  <div class="fb-box-btns">
+    <button class="fb-cancel" onclick="toggleFeedback()">Cancel</button>
+    <button class="fb-send" id="fbSendBtn" onclick="sendFeedback()">Send</button>
+  </div>
+  <div class="fb-msg" id="fbMsg"></div>
 </div>
 
 <!-- ===== 答題畫面 ===== -->
@@ -455,6 +478,38 @@ function endQuiz() {
 }
 
 function goHome() { showScreen('home'); render(); }
+
+function toggleFeedback() {
+  var box = document.getElementById('fbBox');
+  box.classList.toggle('open');
+  if (!box.classList.contains('open')) {
+    document.getElementById('fbText').value = '';
+    document.getElementById('fbMsg').textContent = '';
+  }
+}
+
+function sendFeedback() {
+  var text = document.getElementById('fbText').value.trim();
+  var msg = document.getElementById('fbMsg');
+  if (!text) { msg.textContent = '請輸入內容'; msg.style.color = '#e53e3e'; return; }
+  if (!firebaseReady) { msg.textContent = '回饋功能暫時無法使用'; msg.style.color = '#e53e3e'; return; }
+  var btn = document.getElementById('fbSendBtn');
+  btn.disabled = true;
+  db.ref('feedback').push({
+    text: text,
+    time: Date.now()
+  }).then(function() {
+    msg.textContent = '感謝你的回饋！';
+    msg.style.color = '#38a169';
+    document.getElementById('fbText').value = '';
+    btn.disabled = false;
+    setTimeout(function() { toggleFeedback(); }, 1500);
+  }).catch(function() {
+    msg.textContent = '送出失敗，請稍後再試';
+    msg.style.color = '#e53e3e';
+    btn.disabled = false;
+  });
+}
 
 /* ── 初始化 ── */
 render();
