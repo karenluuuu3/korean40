@@ -10,43 +10,56 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
 .app{max-width:480px;margin:0 auto;padding:1.5rem 1.25rem}
 #home,#result{text-align:center}
-.section-label{font-size:12px;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:500;text-align:left}
 .screen{display:none}.screen.active{display:block}
-.title{font-size:22px;font-weight:600;margin-bottom:4px}
+.title{font-size:24px;font-weight:700;margin-bottom:4px}
 .subtitle{font-size:14px;color:#888;margin-bottom:1.5rem}
-.section-label{font-size:12px;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:500}
+.section-label{font-size:12px;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:500;text-align:left}
 .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem}
 .cat-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .15s;-webkit-user-select:none;user-select:none}
+.cat-btn:hover{border-color:#bbb}
 .cat-btn .kor{font-size:20px;font-weight:600;display:block;margin-bottom:2px}
 .cat-btn .label{font-size:13px;color:#777}
 .cat-btn.sel{border-color:#4a90d9;background:#eef4fc}
 .cat-btn.sel .kor{color:#2b6cb0}
 .cat-btn.sel .label{color:#3b7dd8}
 .dir-group{display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem}
-.dir-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:10px;transition:all .15s;-webkit-user-select:none;user-select:none; text-align:left}
+.dir-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:10px;transition:all .15s;-webkit-user-select:none;user-select:none;text-align:left}
+.dir-btn:hover{border-color:#bbb}
 .dir-btn .dot{width:18px;height:18px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .dir-btn.sel{border-color:#4a90d9;background:#eef4fc}
 .dir-btn.sel .dot{border-color:#4a90d9;background:#4a90d9}
 .dir-btn.sel .dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
-.start-btn{width:100%;padding:14px;border-radius:10px;background:#4a90d9;color:#fff;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:transform .1s}
+.start-btn{width:100%;padding:14px;border-radius:10px;background:#4a90d9;color:#fff;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:all .15s}
+.start-btn:hover{background:#3a7bc8}
 .start-btn:active{transform:scale(.97)}
 .start-btn:disabled{opacity:.4;cursor:not-allowed}
 .err-msg{font-size:13px;color:#e53e3e;margin-bottom:10px;min-height:18px}
+.total-count{font-size:13px;color:#aaa;margin-top:1.25rem}
+.total-count span{font-weight:600;color:#4a90d9}
+
+/* 答題畫面 */
 .quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
 .score-bar{display:flex;gap:14px;font-size:14px;color:#666}
 .score-bar .g{color:#38a169}.score-bar .r{color:#e53e3e}
 .score-bar span.v{font-weight:600;color:#1a1a1a}
-.end-btn{font-size:14px;color:#e53e3e;cursor:pointer;background:#fff;border:2px solid #e53e3e;border-radius:8px;padding:6px 14px;font-weight:500}
+.end-btn{font-size:14px;color:#e53e3e;cursor:pointer;background:#fff;border:2px solid #e53e3e;border-radius:8px;padding:6px 14px;font-weight:500;transition:all .15s}
+.end-btn:hover{background:#fff5f5}
+.streak-bar{text-align:center;font-size:13px;color:#888;margin-bottom:12px;min-height:20px}
+.streak-bar .fire{color:#e67e22;font-weight:600}
 .q-card{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:2rem;text-align:center;margin-bottom:1rem}
 .q-char{font-size:60px;font-weight:700;line-height:1.3}
 .q-char.roman{font-size:36px}
 .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
-.opt-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:16px 8px;cursor:pointer;font-size:20px;font-weight:600;text-align:center;transition:all .15s;-webkit-user-select:none;user-select:none}.opt-btn:active{transform:scale(.97)}
+.opt-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:16px 8px;cursor:pointer;font-size:20px;font-weight:600;text-align:center;transition:all .15s;-webkit-user-select:none;user-select:none}
+.opt-btn:hover{border-color:#bbb}
+.opt-btn:active{transform:scale(.97)}
 .opt-btn.correct{border-color:#38a169;background:#f0fff4;color:#276749}
 .opt-btn.wrong{border-color:#e53e3e;background:#fff5f5;color:#c53030}
 .opt-btn.reveal{border-color:#38a169;background:#f0fff4;color:#276749}
 .opt-btn.disabled{pointer-events:none;opacity:.55}
-.fb-panel{border-radius:12px;padding:1.25rem;margin-bottom:1rem;text-align:center}
+
+/* 回饋 */
+.fb-panel{border-radius:12px;padding:1.25rem;margin-bottom:1rem;text-align:center;animation:fadeUp .25s ease}
 .fb-panel.ok{background:#f0fff4;border:1px solid #c6f6d5}
 .fb-panel.no{background:#fff5f5;border:1px solid #fed7d7}
 .fb-icon{font-size:32px;margin-bottom:4px}
@@ -57,16 +70,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 .fb-detail strong{font-weight:600;color:#1a1a1a}
 .fb-pair{font-size:20px;font-weight:700;color:#1a1a1a;margin-top:10px;letter-spacing:2px}
 .next-btn{width:100%;padding:14px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;background:#fff;border:2px solid #d0d0d0;color:#1a1a1a;transition:all .15s}
+.next-btn:hover{border-color:#aaa}
 .next-btn:active{transform:scale(.97)}
-.result-card{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:2rem;text-align:center;margin-bottom:1.25rem}
-.result-card .big{font-size:52px;font-weight:700;color:#4a90d9;margin:8px 0}
+
+/* 結果 */
+.result-card{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:2rem;text-align:center;margin-bottom:1.25rem;animation:fadeUp .3s ease}
+.result-card .big{font-size:52px;font-weight:700;margin:8px 0}
+.result-card .comment{font-size:14px;color:#888;margin-top:4px}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem}
 .stat-item{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:1rem;text-align:center}
 .stat-item .sv{font-size:24px;font-weight:700}
 .stat-item .sl{font-size:12px;color:#999;margin-top:2px}
 .btn-group{display:flex;flex-direction:column;gap:8px}
-.btn-primary{width:100%;padding:14px;border-radius:10px;background:#4a90d9;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer}
-.btn-secondary{width:100%;padding:14px;border-radius:10px;background:#fff;border:2px solid #d0d0d0;color:#1a1a1a;font-size:15px;font-weight:600;cursor:pointer}
+.btn-primary{width:100%;padding:14px;border-radius:10px;background:#4a90d9;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all .15s}
+.btn-primary:hover{background:#3a7bc8}
+.btn-secondary{width:100%;padding:14px;border-radius:10px;background:#fff;border:2px solid #d0d0d0;color:#1a1a1a;font-size:15px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-secondary:hover{border-color:#aaa}
+
+/* 排行榜 */
+.history-section{margin-top:1.5rem;text-align:left}
+.history-section h3{font-size:14px;font-weight:600;margin-bottom:8px;text-align:center;color:#666}
+.history-list{max-height:200px;overflow-y:auto;border:1px solid #e8e8e8;border-radius:10px;background:#fff}
+.history-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:13px;border-bottom:1px solid #f0f0f0}
+.history-row:last-child{border-bottom:none}
+.history-row .h-rank{font-weight:700;color:#4a90d9;min-width:24px}
+.history-row .h-rate{font-weight:600}
+.history-row .h-detail{color:#999}
+.no-records{text-align:center;padding:20px;font-size:13px;color:#bbb}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:500px){
   .q-char{font-size:48px}
@@ -90,6 +122,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 
   <div class="err-msg" id="homeErr"></div>
   <button class="start-btn" onclick="startQuiz()">START</button>
+  <div class="total-count">累計完成 <span id="totalRuns">--</span> 次練習</div>
 </div>
 
 <!-- ===== 答題畫面 ===== -->
@@ -102,6 +135,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
     </div>
     <button class="end-btn" onclick="endQuiz()">離開</button>
   </div>
+  <div class="streak-bar" id="streakBar"></div>
   <div class="q-card">
     <div class="q-char" id="qChar"></div>
   </div>
@@ -115,6 +149,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
   <div class="result-card">
     <div style="font-size:14px;color:#999">正確率</div>
     <div class="big" id="rRate">0%</div>
+    <div class="comment" id="rComment"></div>
   </div>
   <div class="stat-grid">
     <div class="stat-item"><div class="sv" id="rTotal">0</div><div class="sl">總題數</div></div>
@@ -125,13 +160,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
     <button class="btn-primary" onclick="startQuiz()">再練習一次</button>
     <button class="btn-secondary" onclick="goHome()">回到首頁</button>
   </div>
+
+  <div class="history-section">
+    <h3>最近練習紀錄</h3>
+    <div class="history-list" id="historyList">
+      <div class="no-records">載入中...</div>
+    </div>
+  </div>
 </div>
 
 </div>
 
-<div style="text-align:center;font-size:12px;color:#bbb;padding:2rem 0 1rem;">© nebusok製作 僅供個人教育學習</div>
+<div style="text-align:center;font-size:12px;color:#bbb;padding:2rem 0 1rem;">© nebusok製作 僅供教育學習</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBplpxJ3-1rDhnB5xaqU4IPH2D0VsF17SA",
+  authDomain: "korean40.firebaseapp.com",
+  databaseURL: "https://korean40-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "korean40",
+  storageBucket: "korean40.firebasestorage.app",
+  messagingSenderId: "763924551586",
+  appId: "1:763924551586:web:aad24fec98eeae22f704fb",
+  measurementId: "G-VWFC6943K3"
+};
+
+
+var firebaseReady = false;
+try {
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.database();
+  firebaseReady = true;
+} catch(e) {
+  console.warn('Firebase 未設定，紀錄功能停用', e);
+}
+
 /* ── 題庫 ── */
 var DB = {
   bv: [
@@ -169,6 +236,7 @@ var DIRS = [
 var selCats = new Set(['bv','cv','sc','dc']);
 var selDir = 'mix';
 var pool = [], cur = null, right = 0, wrong = 0, total = 0, answered = false;
+var streak = 0, bestStreak = 0;
 
 /* ── 首頁渲染 ── */
 function render() {
@@ -178,14 +246,12 @@ function render() {
       '<span class="kor">' + c.kor + '</span>' +
       '<span class="label">' + c.label + '</span></div>';
   }).join('');
-
   document.getElementById('dirs').innerHTML = DIRS.map(function(d) {
     return '<div class="dir-btn' + (selDir === d.id ? ' sel' : '') +
       '" onclick="setDir(\'' + d.id + '\')">' +
       '<span class="dot"></span>' + d.label + '</div>';
   }).join('');
 }
-
 function toggleCat(id) {
   selCats.has(id) ? selCats.delete(id) : selCats.add(id);
   document.getElementById('homeErr').textContent = '';
@@ -216,7 +282,6 @@ function pickQuestion() {
   var dir = selDir === 'mix' ? (Math.random() < 0.5 ? 'kr' : 'rk') : selDir;
   return { item: item, dir: dir };
 }
-
 function getDistractors(correct, field, count) {
   var all = pool.map(function(p) { return p[field]; }).filter(function(v) { return v !== correct; });
   shuffle(all);
@@ -273,7 +338,8 @@ function pickOpt(el) {
   var correctVal = cur.item[ansField];
   var picked = el.getAttribute('data-val');
   var isRight = picked === correctVal;
-  if (isRight) right++; else wrong++;
+  if (isRight) { right++; streak++; if (streak > bestStreak) bestStreak = streak; }
+  else { wrong++; streak = 0; }
   document.getElementById('rightC').textContent = right;
   document.getElementById('wrongC').textContent = wrong;
 
@@ -306,6 +372,49 @@ function showFeedback(isRight, userAns, correctAns) {
   }
 }
 
+
+function getRateColor(rate) {
+  if (rate >= 80) return '#38a169';
+  if (rate >= 50) return '#4a90d9';
+  return '#e53e3e';
+}
+
+/* ── Firebase 讀寫 ── */
+function loadTotalRuns() {
+  var el = document.getElementById('totalRuns');
+  if (!firebaseReady) { el.textContent = '--'; return; }
+  db.ref('counter/total').on('value', function(snap) {
+    el.textContent = (snap.val() || 0).toLocaleString();
+  });
+}
+
+function saveRun(data) {
+  if (!firebaseReady) return;
+  db.ref('counter/total').transaction(function(val) { return (val || 0) + 1; });
+  db.ref('runs').push(data);
+}
+
+function loadHistory() {
+  var el = document.getElementById('historyList');
+  if (!firebaseReady) { el.innerHTML = '<div class="no-records">紀錄功能未啟用</div>'; return; }
+  db.ref('runs').orderByChild('time').limitToLast(20).once('value', function(snap) {
+    var rows = [];
+    snap.forEach(function(c) { rows.push(c.val()); });
+    rows.reverse();
+    if (rows.length === 0) { el.innerHTML = '<div class="no-records">還沒有紀錄</div>'; return; }
+    el.innerHTML = rows.map(function(r, i) {
+      var c = getRateColor(r.rate);
+      var d = new Date(r.time);
+      var ds = (d.getMonth()+1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+      return '<div class="history-row">' +
+        '<span class="h-rank">#' + (i + 1) + '</span>' +
+        '<span class="h-rate" style="color:' + c + '">' + r.rate + '%</span>' +
+        '<span class="h-detail">' + r.right + '/' + r.total + ' 題 · ' + ds + '</span>' +
+      '</div>';
+    }).join('');
+  });
+}
+
 /* ── 開始 / 結束 ── */
 function startQuiz() {
   if (selCats.size === 0) {
@@ -313,7 +422,7 @@ function startQuiz() {
     return;
   }
   buildPool();
-  right = 0; wrong = 0; total = 0;
+  right = 0; wrong = 0; total = 0; streak = 0; bestStreak = 0;
   document.getElementById('rightC').textContent = 0;
   document.getElementById('wrongC').textContent = 0;
   showScreen('quiz');
@@ -323,16 +432,24 @@ function startQuiz() {
 function endQuiz() {
   var rate = total > 0 ? Math.round(right / total * 100) : 0;
   document.getElementById('rRate').textContent = rate + '%';
+  document.getElementById('rRate').style.color = getRateColor(rate);
   document.getElementById('rTotal').textContent = total;
   document.getElementById('rRight').textContent = right;
   document.getElementById('rWrong').textContent = wrong;
+
+  if (total > 0) {
+    saveRun({ rate: rate, right: right, wrong: wrong, total: total, best_streak: bestStreak, time: Date.now() });
+  }
+
   showScreen('result');
+  loadHistory();
 }
 
 function goHome() { showScreen('home'); render(); }
 
 /* ── 初始化 ── */
 render();
+loadTotalRuns();
 </script>
 </body>
 </html>
