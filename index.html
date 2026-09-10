@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>韓文40音馬拉松</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+::selection{background:#4a90d9;color:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
+.app{max-width:480px;margin:0 auto;padding:1.5rem 1.25rem}
+#home,#result{text-align:center}
+.section-label{font-size:12px;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:500;text-align:left}
+.screen{display:none}.screen.active{display:block}
+.title{font-size:22px;font-weight:600;margin-bottom:4px}
+.subtitle{font-size:14px;color:#888;margin-bottom:1.5rem}
+.section-label{font-size:12px;color:#999;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:500}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem}
+.cat-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .15s;-webkit-user-select:none;user-select:none}
+.cat-btn .kor{font-size:20px;font-weight:600;display:block;margin-bottom:2px}
+.cat-btn .label{font-size:13px;color:#777}
+.cat-btn.sel{border-color:#4a90d9;background:#eef4fc}
+.cat-btn.sel .kor{color:#2b6cb0}
+.cat-btn.sel .label{color:#3b7dd8}
+.dir-group{display:flex;flex-direction:column;gap:6px;margin-bottom:1.5rem}
+.dir-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:10px;transition:all .15s;-webkit-user-select:none;user-select:none; text-align:left}
+.dir-btn .dot{width:18px;height:18px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.dir-btn.sel{border-color:#4a90d9;background:#eef4fc}
+.dir-btn.sel .dot{border-color:#4a90d9;background:#4a90d9}
+.dir-btn.sel .dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+.start-btn{width:100%;padding:14px;border-radius:10px;background:#4a90d9;color:#fff;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:transform .1s}
+.start-btn:active{transform:scale(.97)}
+.start-btn:disabled{opacity:.4;cursor:not-allowed}
+.err-msg{font-size:13px;color:#e53e3e;margin-bottom:10px;min-height:18px}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.score-bar{display:flex;gap:14px;font-size:14px;color:#666}
+.score-bar .g{color:#38a169}.score-bar .r{color:#e53e3e}
+.score-bar span.v{font-weight:600;color:#1a1a1a}
+.end-btn{font-size:14px;color:#e53e3e;cursor:pointer;background:#fff;border:2px solid #e53e3e;border-radius:8px;padding:6px 14px;font-weight:500}
+.q-card{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:2rem;text-align:center;margin-bottom:1rem}
+.q-char{font-size:60px;font-weight:700;line-height:1.3}
+.q-char.roman{font-size:36px}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+.opt-btn{background:#fff;border:2px solid #e0e0e0;border-radius:10px;padding:16px 8px;cursor:pointer;font-size:20px;font-weight:600;text-align:center;transition:all .15s;-webkit-user-select:none;user-select:none}.opt-btn:active{transform:scale(.97)}
+.opt-btn.correct{border-color:#38a169;background:#f0fff4;color:#276749}
+.opt-btn.wrong{border-color:#e53e3e;background:#fff5f5;color:#c53030}
+.opt-btn.reveal{border-color:#38a169;background:#f0fff4;color:#276749}
+.opt-btn.disabled{pointer-events:none;opacity:.55}
+.fb-panel{border-radius:12px;padding:1.25rem;margin-bottom:1rem;text-align:center}
+.fb-panel.ok{background:#f0fff4;border:1px solid #c6f6d5}
+.fb-panel.no{background:#fff5f5;border:1px solid #fed7d7}
+.fb-icon{font-size:32px;margin-bottom:4px}
+.fb-text{font-size:17px;font-weight:600}
+.fb-panel.ok .fb-text{color:#276749}
+.fb-panel.no .fb-text{color:#c53030}
+.fb-detail{font-size:14px;color:#666;margin-top:8px;line-height:1.6}
+.fb-detail strong{font-weight:600;color:#1a1a1a}
+.fb-pair{font-size:20px;font-weight:700;color:#1a1a1a;margin-top:10px;letter-spacing:2px}
+.next-btn{width:100%;padding:14px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;background:#fff;border:2px solid #d0d0d0;color:#1a1a1a;transition:all .15s}
+.next-btn:active{transform:scale(.97)}
+.result-card{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:2rem;text-align:center;margin-bottom:1.25rem}
+.result-card .big{font-size:52px;font-weight:700;color:#4a90d9;margin:8px 0}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem}
+.stat-item{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:1rem;text-align:center}
+.stat-item .sv{font-size:24px;font-weight:700}
+.stat-item .sl{font-size:12px;color:#999;margin-top:2px}
+.btn-group{display:flex;flex-direction:column;gap:8px}
+.btn-primary{width:100%;padding:14px;border-radius:10px;background:#4a90d9;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer}
+.btn-secondary{width:100%;padding:14px;border-radius:10px;background:#fff;border:2px solid #d0d0d0;color:#1a1a1a;font-size:15px;font-weight:600;cursor:pointer}
+
+@media(max-width:500px){
+  .q-char{font-size:48px}
+  .opt-btn{font-size:18px;padding:14px 6px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ===== 首頁 ===== -->
+<div class="screen active" id="home">
+  <div class="title">韓文40音馬拉松</div>
+  <div class="subtitle">選擇題型與方向，開始無限練習</div>
+
+  <div class="section-label">字母類型（可複選）</div>
+  <div class="cat-grid" id="cats"></div>
+
+  <div class="section-label">測驗方向</div>
+  <div class="dir-group" id="dirs"></div>
+
+  <div class="err-msg" id="homeErr"></div>
+  <button class="start-btn" onclick="startQuiz()">START</button>
+</div>
+
+<!-- ===== 答題畫面 ===== -->
+<div class="screen" id="quiz">
+  <div class="quiz-top">
+    <div class="score-bar">
+      <div class="g">✓ <span class="v" id="rightC">0</span></div>
+      <div class="r">✕ <span class="v" id="wrongC">0</span></div>
+      <div>第 <span class="v" id="qNum">1</span> 題</div>
+    </div>
+    <button class="end-btn" onclick="endQuiz()">離開</button>
+  </div>
+  <div class="q-card">
+    <div class="q-char" id="qChar"></div>
+  </div>
+  <div id="ansArea"></div>
+  <div id="fbArea"></div>
+</div>
+
+<!-- ===== 結果畫面 ===== -->
+<div class="screen" id="result">
+  <div class="title" style="text-align:center">\ 結束 /</div>
+  <div class="result-card">
+    <div style="font-size:14px;color:#999">正確率</div>
+    <div class="big" id="rRate">0%</div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-item"><div class="sv" id="rTotal">0</div><div class="sl">總題數</div></div>
+    <div class="stat-item"><div class="sv" id="rRight">0</div><div class="sl">答對</div></div>
+    <div class="stat-item"><div class="sv" id="rWrong">0</div><div class="sl">答錯</div></div>
+  </div>
+  <div class="btn-group">
+    <button class="btn-primary" onclick="startQuiz()">再練習一次</button>
+    <button class="btn-secondary" onclick="goHome()">回到首頁</button>
+  </div>
+</div>
+
+</div>
+
+<div style="text-align:center;font-size:12px;color:#bbb;padding:2rem 0 1rem;">© nebusok製作 僅供個人教育學習</div>
+
+<script>
+/* ── 題庫 ── */
+var DB = {
+  bv: [
+    {k:'ㅏ',r:'a'},{k:'ㅑ',r:'ya'},{k:'ㅓ',r:'eo'},{k:'ㅕ',r:'yeo'},{k:'ㅗ',r:'o'},
+    {k:'ㅛ',r:'yo'},{k:'ㅜ',r:'u'},{k:'ㅠ',r:'yu'},{k:'ㅡ',r:'eu'},{k:'ㅣ',r:'i'}
+  ],
+  cv: [
+    {k:'ㅐ',r:'ae'},{k:'ㅒ',r:'yae'},{k:'ㅔ',r:'e'},{k:'ㅖ',r:'ye'},{k:'ㅘ',r:'wa'},
+    {k:'ㅙ',r:'wae'},{k:'ㅚ',r:'oe'},{k:'ㅝ',r:'wo'},{k:'ㅞ',r:'we'},{k:'ㅟ',r:'wi'},
+    {k:'ㅢ',r:'ui'}
+  ],
+  sc: [
+    {k:'ㄱ',r:'g'},{k:'ㄴ',r:'n'},{k:'ㄷ',r:'d'},{k:'ㄹ',r:'r'},{k:'ㅁ',r:'m'},
+    {k:'ㅂ',r:'b'},{k:'ㅅ',r:'s'},{k:'ㅇ',r:'ng'},{k:'ㅈ',r:'j'},{k:'ㅊ',r:'ch'},
+    {k:'ㅋ',r:'k'},{k:'ㅌ',r:'t'},{k:'ㅍ',r:'p'},{k:'ㅎ',r:'h'}
+  ],
+  dc: [
+    {k:'ㄲ',r:'kk'},{k:'ㄸ',r:'tt'},{k:'ㅃ',r:'pp'},{k:'ㅆ',r:'ss'},{k:'ㅉ',r:'jj'}
+  ]
+};
+
+var CATS = [
+  {id:'bv', label:'基本母音', kor:'ㅏ ㅓ ㅗ'},
+  {id:'cv', label:'複合母音', kor:'ㅐ ㅔ ㅘ'},
+  {id:'sc', label:'單子音',   kor:'ㄱ ㄴ ㄷ'},
+  {id:'dc', label:'雙子音',   kor:'ㄲ ㄸ ㅃ'}
+];
+var DIRS = [
+  {id:'kr',  label:'韓文 → 羅馬拼音'},
+  {id:'rk',  label:'羅馬拼音 → 韓文'},
+  {id:'mix', label:'混合隨機'}
+];
+
+/* ── 狀態 ── */
+var selCats = new Set(['bv','cv','sc','dc']);
+var selDir = 'mix';
+var pool = [], cur = null, right = 0, wrong = 0, total = 0, answered = false;
+
+/* ── 首頁渲染 ── */
+function render() {
+  document.getElementById('cats').innerHTML = CATS.map(function(c) {
+    return '<div class="cat-btn' + (selCats.has(c.id) ? ' sel' : '') +
+      '" onclick="toggleCat(\'' + c.id + '\')">' +
+      '<span class="kor">' + c.kor + '</span>' +
+      '<span class="label">' + c.label + '</span></div>';
+  }).join('');
+
+  document.getElementById('dirs').innerHTML = DIRS.map(function(d) {
+    return '<div class="dir-btn' + (selDir === d.id ? ' sel' : '') +
+      '" onclick="setDir(\'' + d.id + '\')">' +
+      '<span class="dot"></span>' + d.label + '</div>';
+  }).join('');
+}
+
+function toggleCat(id) {
+  selCats.has(id) ? selCats.delete(id) : selCats.add(id);
+  document.getElementById('homeErr').textContent = '';
+  render();
+}
+function setDir(id) { selDir = id; render(); }
+
+/* ── 工具 ── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+function shuffle(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function buildPool() {
+  pool = [];
+  selCats.forEach(function(c) { DB[c].forEach(function(item) { pool.push(item); }); });
+}
+
+/* ── 出題 ── */
+function pickQuestion() {
+  var item = pool[Math.floor(Math.random() * pool.length)];
+  var dir = selDir === 'mix' ? (Math.random() < 0.5 ? 'kr' : 'rk') : selDir;
+  return { item: item, dir: dir };
+}
+
+function getDistractors(correct, field, count) {
+  var all = pool.map(function(p) { return p[field]; }).filter(function(v) { return v !== correct; });
+  shuffle(all);
+  var u = [];
+  for (var i = 0; i < all.length && u.length < count; i++) {
+    if (u.indexOf(all[i]) === -1) u.push(all[i]);
+  }
+  if (u.length < count) {
+    var extra = [];
+    Object.keys(DB).forEach(function(k) {
+      DB[k].forEach(function(p) {
+        var v = p[field];
+        if (v !== correct && u.indexOf(v) === -1 && extra.indexOf(v) === -1) extra.push(v);
+      });
+    });
+    shuffle(extra);
+    while (u.length < count && extra.length) u.push(extra.shift());
+  }
+  return u.slice(0, count);
+}
+
+function showQuestion() {
+  answered = false;
+  cur = pickQuestion();
+  var qc = document.getElementById('qChar');
+  var aa = document.getElementById('ansArea');
+  var fb = document.getElementById('fbArea');
+  fb.innerHTML = '';
+  document.getElementById('qNum').textContent = total + 1;
+
+  if (cur.dir === 'kr') {
+    qc.textContent = cur.item.k;
+    qc.className = 'q-char';
+  } else {
+    qc.textContent = cur.item.r;
+    qc.className = 'q-char roman';
+  }
+
+  var ansField = cur.dir === 'kr' ? 'r' : 'k';
+  var correctVal = cur.item[ansField];
+  var dists = getDistractors(correctVal, ansField, 3);
+  var opts = shuffle([correctVal].concat(dists));
+  aa.innerHTML = '<div class="opts-grid">' + opts.map(function(o) {
+    return '<div class="opt-btn" data-val="' + o + '" onclick="pickOpt(this)">' + o + '</div>';
+  }).join('') + '</div>';
+}
+
+/* ── 作答判斷 ── */
+function pickOpt(el) {
+  if (answered) return;
+  answered = true;
+  total++;
+  var ansField = cur.dir === 'kr' ? 'r' : 'k';
+  var correctVal = cur.item[ansField];
+  var picked = el.getAttribute('data-val');
+  var isRight = picked === correctVal;
+  if (isRight) right++; else wrong++;
+  document.getElementById('rightC').textContent = right;
+  document.getElementById('wrongC').textContent = wrong;
+
+  var btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(function(b) {
+    b.classList.add('disabled');
+    if (b.getAttribute('data-val') === correctVal) b.classList.add(isRight ? 'correct' : 'reveal');
+    if (b === el && !isRight) b.classList.add('wrong');
+  });
+  showFeedback(isRight, picked, correctVal);
+}
+
+function showFeedback(isRight, userAns, correctAns) {
+  var fb = document.getElementById('fbArea');
+  var pair = cur.item.k + ' = ' + cur.item.r;
+  if (isRight) {
+    fb.innerHTML =
+      '<div class="fb-panel ok">' +
+        '<div class="fb-icon">✅</div>' +
+        '<div class="fb-pair">' + pair + '</div>' +
+      '</div>' +
+      '<button class="next-btn" onclick="showQuestion()">下一題</button>';
+  } else {
+    fb.innerHTML =
+      '<div class="fb-panel no">' +
+        '<div class="fb-icon">❌</div>' +
+        '<div class="fb-pair">' + pair + '</div>' +
+      '</div>' +
+      '<button class="next-btn" onclick="showQuestion()">下一題</button>';
+  }
+}
+
+/* ── 開始 / 結束 ── */
+function startQuiz() {
+  if (selCats.size === 0) {
+    document.getElementById('homeErr').textContent = '請至少選擇一個字母類型';
+    return;
+  }
+  buildPool();
+  right = 0; wrong = 0; total = 0;
+  document.getElementById('rightC').textContent = 0;
+  document.getElementById('wrongC').textContent = 0;
+  showScreen('quiz');
+  showQuestion();
+}
+
+function endQuiz() {
+  var rate = total > 0 ? Math.round(right / total * 100) : 0;
+  document.getElementById('rRate').textContent = rate + '%';
+  document.getElementById('rTotal').textContent = total;
+  document.getElementById('rRight').textContent = right;
+  document.getElementById('rWrong').textContent = wrong;
+  showScreen('result');
+}
+
+function goHome() { showScreen('home'); render(); }
+
+/* ── 初始化 ── */
+render();
+</script>
+</body>
+</html>
